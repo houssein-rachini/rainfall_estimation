@@ -1,0 +1,51 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging and test artifacts
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Streamlit and local secrets
+.streamlit/secrets.toml
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Local logs
+*.log
+
+# Large data exports and intermediate datasets
+*.csv
+!new_final_merged_with_ndvi_imerg_no_leakage_005.csv
+
+# Trained models and scalers
+*.pkl
+*.h5
+*.joblib
+trained_*.json
+
+# Model metadata and generated artifacts
+*.meta.json
+artifacts_bias_residual/
+chirpsstations/

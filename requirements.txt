@@ -1,0 +1,15 @@
+streamlit
+folium
+streamlit-folium
+earthengine-api
+google-auth
+google-auth-oauthlib
+pandas
+numpy
+matplotlib
+seaborn
+joblib
+tensorflow
+scikit-learn
+xgboost
+altair
