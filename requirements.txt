@@ -4,12 +4,12 @@ streamlit-folium
 earthengine-api
 google-auth
 google-auth-oauthlib
-pandas
-numpy
+pandas<2.3
+numpy<2
 matplotlib
 seaborn
 joblib
-tensorflow
-scikit-learn
+tensorflow==2.16.1
+scikit-learn<1.6
 xgboost
 altair
