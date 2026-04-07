@@ -4,6 +4,7 @@ import ee
 import numpy as np
 import pandas as pd
 from streamlit_folium import st_folium
+from ee_auth import initialize_earth_engine
 
 from predictions import (
     load_dnn_model,
@@ -16,10 +17,6 @@ from predictions import (
     predict_ml_fast,
     predict_ensemble_fast,
 )
-
-
-ee.Initialize()
-
 
 def _fetch_point_features_ee(lon, lat, year, month):
     start = ee.Date.fromYMD(int(year), int(month), 1)
@@ -83,6 +80,12 @@ def _fetch_point_features_ee(lon, lat, year, month):
 
 def _show_point_model_prediction():
     st.subheader("Point Model Prediction (Map)")
+
+    try:
+        initialize_earth_engine()
+    except Exception as exc:
+        st.error(f"Earth Engine initialization failed: {exc}")
+        return
 
     lon_default = float(st.session_state.get("point_lon", 35.7523))
     lat_default = float(st.session_state.get("point_lat", 33.9001))
