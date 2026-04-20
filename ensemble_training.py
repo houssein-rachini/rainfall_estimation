@@ -291,7 +291,9 @@ def train_ensemble_model(
         prob_wet = clf.predict_proba(X_val_scaled)[:, 1]
         prob_wet = np.clip(np.asarray(prob_wet, dtype=float), 0.0, 1.0)
         if two_stage_gate_mode == "soft_probability":
-            y_pred_out = y_pred_out * np.power(prob_wet, max(float(soft_gate_gamma), 1e-6))
+            y_pred_out = y_pred_out * np.power(
+                prob_wet, max(float(soft_gate_gamma), 1e-6)
+            )
         else:
             y_pred_out = y_pred_out * (prob_wet >= prob_threshold)
 
@@ -401,14 +403,14 @@ def show_ensemble_training_tab(df: pd.DataFrame):
 
     use_log1p = st.checkbox(
         "Train on log1p(GROUND)",
-        value=False,
+        value=True,
         key="ensemble_log1p",
         help="Reduces skew and downweights extreme rainfall values.",
     )
 
     use_two_stage = st.checkbox(
         "Two-stage model (classify dry vs wet, then regress)",
-        value=False,
+        value=True,
         key="ensemble_two_stage",
         help="Helps reduce overestimation at low/zero rainfall.",
     )
@@ -416,7 +418,7 @@ def show_ensemble_training_tab(df: pd.DataFrame):
         "Dry threshold (mm)",
         0.0,
         20.0,
-        1.0,
+        1.5,
         step=0.5,
         key="ensemble_dry_threshold",
         help="Values ≤ this are treated as dry (0) in the classifier.",
@@ -433,7 +435,7 @@ def show_ensemble_training_tab(df: pd.DataFrame):
     two_stage_gate_mode_ui = st.selectbox(
         "Two-stage output gate",
         ["Hard threshold (zero dry)", "Soft probability (expected rainfall)"],
-        index=1,
+        index=0,
         key="ensemble_two_stage_gate_mode",
         help="Soft gate scales rainfall by wet probability instead of forcing dry to zero.",
     )
@@ -493,9 +495,9 @@ def show_ensemble_training_tab(df: pd.DataFrame):
     cv_type = st.selectbox(
         "Cross-validation strategy:",
         [
+            "GroupKFold (Year)",
             "KFold",
             "GroupKFold (Station)",
-            "GroupKFold (Year)",
             "TimeSeriesSplit",
             "No CV (train on full dataset)",
         ],
@@ -559,7 +561,7 @@ def show_ensemble_training_tab(df: pd.DataFrame):
         groups_train = None
 
     alpha = st.slider(
-        "Ensemble Weight (DNN contribution)", 0.0, 1.0, 0.4, key="ensemble_alpha"
+        "Ensemble Weight (DNN contribution)", 0.0, 1.0, 0.5, key="ensemble_alpha"
     )
     epochs = st.slider("Number of Epochs", 10, 600, 300, key="ensemble_epochs")
     optimizer_choice = st.selectbox(
